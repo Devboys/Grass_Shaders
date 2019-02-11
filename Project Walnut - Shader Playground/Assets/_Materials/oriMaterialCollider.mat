@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: orimaterial
-  m_Shader: {fileID: 4800000, guid: ab80d47c3d46cc748add25bfc7c96700, type: 3}
+  m_Name: oriMaterialCollider
+  m_Shader: {fileID: 4800000, guid: 6c4c03a0707fced4591d9fb2fcc09f88, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -72,8 +72,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _WaveMagnitude: 0.4
     - _ZWrite: 1
-    - _isFront: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
