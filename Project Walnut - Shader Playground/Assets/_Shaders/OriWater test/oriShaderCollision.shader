@@ -4,7 +4,7 @@ Shader "Custom/ColliderOriWater" {
     Properties{
         _MainTex("Base (RGB)", 2D) = "white" {}
         _CollisionPoint("Collision Point", float) = 0
-        _ImpactForce("Impact Force", float) = 0
+        _CollisionForce("Collision Force", float) = 0
         _WaveMagnitude("Wave Magnitude", float) = 0.4
     }
         SubShader{
@@ -19,6 +19,8 @@ Shader "Custom/ColliderOriWater" {
                 #pragma fragment frag
 
                 sampler2D _MainTex;
+                float _CollisionPoint;
+                float _CollisionForce;
                 float _WaveMagnitude;
 
                 struct appdata {
@@ -52,9 +54,10 @@ Shader "Custom/ColliderOriWater" {
                     //offset only the top-vertexes.
                     if (i.uv.y == 0)
                     {
-                        half xDif = abs(v.x);
+                        half xDif = sqrt(pow((_CollisionPoint - v.x), 2));
                         half invXDif = rangeLerp(2, 0, 0, 5, xDif);
-                        half offset =  _WaveMagnitude * (invXDif)* cos(xDif + _Time[3]);
+                        half offset =  _WaveMagnitude * (invXDif)* cos(xDif + _Time[3]) * _CollisionForce;
+                        //half offset = _WaveMagnitude * xDif;
 
                         v.z += offset;
                     }
@@ -67,7 +70,18 @@ Shader "Custom/ColliderOriWater" {
                 half4 frag(v2f i) : COLOR
                 {
                     half4 c = tex2D(_MainTex, i.uv);
-                    c.a = .5;
+                    c = half4(0.5, 0.5, 0.5, 1);
+
+
+                    float vertCoord = (((_CollisionPoint + 5) / (5 + 5)) * (1 - 0) + 0);
+
+                    //convert local-space to shader space. (local space is -5 to 5, frag space is 0 to 1)
+                    float minMaxOffset = 0.005;
+
+                    /*if (i.uv.r < vertCoord + minMaxOffset && i.uv.r > vertCoord - minMaxOffset && i.uv.g < 0.1) 
+                    {
+                        c = half4(1, 1, 1, 1);
+                    }*/
                     return c;
                 }
                 ENDCG
