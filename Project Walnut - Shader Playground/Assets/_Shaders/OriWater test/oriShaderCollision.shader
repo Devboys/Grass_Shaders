@@ -52,9 +52,9 @@ Shader "Custom/ColliderOriWater" {
                     half4 v = i.vertex;
 
                     //offset only the top-vertexes.
-                    if (i.uv.y == 0)
+                    if (i.uv.y == 0 && _CollisionPoint != 0)
                     {
-                        half xDif = sqrt(pow((_CollisionPoint - v.x), 2));
+                        half xDif = abs(_CollisionPoint - v.x);
                         half invXDif = rangeLerp(2, 0, 0, 5, xDif);
                         half offset =  _WaveMagnitude * (invXDif)* cos(xDif + _Time[3]) * _CollisionForce;
                         //half offset = _WaveMagnitude * xDif;
@@ -73,15 +73,15 @@ Shader "Custom/ColliderOriWater" {
                     c = half4(0.5, 0.5, 0.5, 1);
 
 
-                    float vertCoord = (((_CollisionPoint + 5) / (5 + 5)) * (1 - 0) + 0);
+                    float vertCoord = 1- (((_CollisionPoint + 5) / (5 + 5)) * (1 - 0) + 0);
 
                     //convert local-space to shader space. (local space is -5 to 5, frag space is 0 to 1)
                     float minMaxOffset = 0.005;
 
-                    /*if (i.uv.r < vertCoord + minMaxOffset && i.uv.r > vertCoord - minMaxOffset && i.uv.g < 0.1) 
+                    if (i.uv.r < vertCoord + minMaxOffset && i.uv.r > vertCoord - minMaxOffset && i.uv.g < 0.1) 
                     {
                         c = half4(1, 1, 1, 1);
-                    }*/
+                    }
                     return c;
                 }
                 ENDCG
