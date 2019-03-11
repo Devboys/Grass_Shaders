@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[ExecuteInEditMode]
 public class PointCloudMeshGen : MonoBehaviour
 {
 
@@ -25,9 +27,9 @@ public class PointCloudMeshGen : MonoBehaviour
         Color[] colors = new Color[numPoints];
         for (int i = 0; i < points.Length; ++i)
         {
-            points[i] = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+            points[i] = new Vector3(Random.Range(-1f, 1f), Random.Range(0, 0.2f), Random.Range(-1f, 1f));
             indecies[i] = i;
-            colors[i] = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), 1.0f);
+            colors[i] = Color.white;
         }
 
         mesh.vertices = points;

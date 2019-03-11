@@ -12,11 +12,11 @@ public class Debug_CameraMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Q))
         {
-            yValue = -Speed;
+            yValue = -Speed * 0.3f;
         }
         if (Input.GetKey(KeyCode.E))
         {
-            yValue = Speed;
+            yValue = Speed * 0.3f;
         }
 
         transform.position = new Vector3(transform.position.x + xAxisValue, transform.position.y + yValue, transform.position.z + zAxisValue);
