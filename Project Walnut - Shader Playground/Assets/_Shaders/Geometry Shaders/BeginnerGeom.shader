@@ -29,7 +29,7 @@ Shader "Custom/BeginnerGeom"
             struct g2f
             {
                 float4 pos: SV_POSITION;
-                float3 norm : NORMAL;
+                //float3 norm : NORMAL;
                 //float2 uv: TEXCOORD0;
                 //float3 diffuseColor: TEXCOORD1;
                 //float3 specularColor : TEXCOORD2;
@@ -65,15 +65,15 @@ Shader "Custom/BeginnerGeom"
                 
 
                 OUT.pos = UnityObjectToClipPos(v0);
-                OUT.norm = normal;
+                //OUT.norm = normal;
                 triStream.Append(OUT);
 
                 OUT.pos = UnityObjectToClipPos(v1);
-                OUT.norm = normal;
+                //OUT.norm = normal;
                 triStream.Append(OUT);
 
                 OUT.pos = UnityObjectToClipPos(v2);
-                OUT.norm = normal;
+                //OUT.norm = normal;
                 triStream.Append(OUT);
             }
 

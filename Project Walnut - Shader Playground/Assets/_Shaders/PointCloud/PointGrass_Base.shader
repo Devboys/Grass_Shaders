@@ -1,10 +1,9 @@
-﻿Shader "Custom/Grass/PointGrass"
+﻿Shader "Custom/Grass/PointGrass_Base"
 {
     Properties
     {
-        _GHeight("Grass Height", range(0, 3)) = 0.5
-        _GWidth("Grass Width", range(0, 3)) = 0.5
-        _Sat("Saturation", range(0, 1)) = 0.5
+
+        _Size("Size", Range(0, 3)) = 0.5
     }
         SubShader
     {
@@ -14,15 +13,12 @@
         {
             CGPROGRAM
             #include "UnityCG.cginc"
-            #include "Assets/_Shaders/ShaderUtils/ShaderUtilities.cginc"
             #define UNITY_SHADER_NO_UPGRADE 1 //prevents mul from being replaced.
             #pragma vertex vert
             #pragma geometry geom
             #pragma fragment frag
 
-            float _GHeight;
-            float _GWidth;
-            float _Sat;
+            float _Size;
 
             struct v2g
             {
@@ -32,7 +28,6 @@
 
             struct g2f 
             {
-                float2 uv : UV;
                 float4 vertex : POSITION;
             };
 
@@ -49,43 +44,42 @@
             void geom(point v2g IN[1], inout TriangleStream<g2f> triStream)
             {
 
-                float3 center = IN[0].vertex.xyz;
+                float3 top = IN[0].vertex.xyz;
+                float4x4 vp = mul(UNITY_MATRIX_MVP, unity_WorldToObject);
+                float halfSize = _Size * 0.5f;
 
                 float3 up = float3(0, 1, 0);
+                float3 left = float3(-1, 0, 0);
                 float3 right = float3(1, 0, 0);
-
-                float halfWidth = _GWidth * random(center.xy) / 2;
-                float heightCalculated = _GHeight * random(center.xy);
-
 
                 float4 pos[3];
                 //WINDING ORDER CLOCKWISE, REMEMBER
-                pos[0] = float4(center + up * heightCalculated, 1.0f);
-                pos[1] = float4(center + right * halfWidth, 1.0f);
-                pos[2] = float4(center - right * halfWidth, 1.0f);
+                pos[0] = float4(top, 1.0f);
+                pos[1] = float4(top + right * halfSize - up * halfSize, 1.0f);
+                pos[2] = float4(top + left * halfSize - up * halfSize, 1.0f);
 
                 g2f OUT;
 
-                //top
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[0]);
-                OUT.uv = float2(0, 1);
+                OUT.vertex = mul(vp, pos[0]);
                 triStream.Append(OUT);
 
-                //right
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[1]);
-                OUT.uv = float2(0, 0);
+                OUT.vertex = mul(vp, pos[1]);
                 triStream.Append(OUT);
 
-                //left
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[2]);
-                OUT.uv = float2(1, 0);
+                OUT.vertex = mul(vp, pos[2]);
                 triStream.Append(OUT);
+
+                OUT.vertex = mul(vp, pos[0]);
+                triStream.Append(OUT);
+
+                triStream.RestartStrip();
+
+
             }
 
             half4 frag(g2f IN) : COLOR
             {
-                float4 col = float4(0.5, IN.uv.y, 0.5, 1);//temp, maybe do stuff with saturation.
-                return col;
+                return float4(0,1,0,1); //temporarily white.
             }
 
             ENDCG
