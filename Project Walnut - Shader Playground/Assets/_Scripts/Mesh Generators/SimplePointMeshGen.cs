@@ -9,7 +9,7 @@ public class SimplePointMeshGen : MonoBehaviour
 {
 
     private Mesh mesh;
-    int numPoints = 10;
+    public int numPoints = 10;
 
     // Use this for initialization
     void Start()
@@ -28,8 +28,8 @@ public class SimplePointMeshGen : MonoBehaviour
 
         for(int i = 0; i < numPoints; i++)
         {
-            float x = -1 + i * 0.2f;
-            points[i] = new Vector3(x, 0.5f, 0);
+            float x = i * 0.2f;
+            points[i] = new Vector3(x, 0, 0);
             indecies[i] = i;
             colors[i] = Color.white;
         }
