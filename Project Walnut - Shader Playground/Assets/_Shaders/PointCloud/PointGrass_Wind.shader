@@ -1,13 +1,11 @@
-﻿Shader "Custom/Grass/PointGrassRotate"
+﻿Shader "Custom/Grass/PointGrassWind"
 {
     Properties
     {
         _GHeight("Grass Height", range(0, 3)) = 0.5
         _GWidth("Grass Width", range(0, 3)) = 0.5
 
-        _RotX("Rotation Around X", range(-90, 90)) = 0
-        _RotY("Rotation Around Y", range(-90, 90)) = 0
-        _RotZ("Rotation Around Z", range(-90, 90)) = 0
+        _RotPoint("Rotation Point", Vector) = (0, 0, 0)
     }
         SubShader
     {
@@ -24,9 +22,8 @@
 
             float _GHeight;
             float _GWidth;
-            float _RotX;
-            float _RotY;
-            float _RotZ;
+            float _RotAmount;
+            float3 _RotPoint;
 
             struct v2g
             {
@@ -45,20 +42,23 @@
                 o.vertex = mul(unity_ObjectToWorld, v.vertex);
                 
                 return o;
-
             }
 
             [maxvertexcount(3)] //3 vert output cause we're extruding triangles.
             void geom(point v2g IN[1], inout TriangleStream<g2f> triStream)
             {
-
                 float3 center = IN[0].vertex.xyz;
+
+                //define identity vectors to use in movement.
                 float3 up = float3(0, 1, 0);
                 float3 right = float3(1, 0, 0);
                 float3 forward = float3(0, 0, 1);
 
+                //side vertexes are offset half of _GWidth from center of grass.
                 float halfWidth = (_GWidth) / 2;
-                float heightCalculated = _GHeight * randomRange(center.xy, 0.5, 1);
+
+                //grass height is randomized based on XZ world coordinates of grass.
+                float heightCalculated = _GHeight * randomRange(center.xz, 0.5, 1);
 
                 float4 pos[3];
                 //WINDING ORDER CLOCKWISE, REMEMBER
@@ -66,9 +66,13 @@
                 pos[1] = float4(center + right * halfWidth, 1.0f);
                 pos[2] = float4(center - right * halfWidth, 1.0f);
 
-                pos[0] = float4(rotateAroundX(pos[0] - center, _RotX * (UNITY_PI/ 180)) + center, 1);
-                pos[0] = float4(rotateAroundY(pos[0] - center, _RotY * (UNITY_PI / 180)) + center, 1);
-                pos[0] = float4(rotateAroundZ(pos[0] - center, _RotZ * (UNITY_PI / 180)) + center, 1);
+                //get axis and angle of rotation to face point.
+                float3 rotationVector = normalize(pos[0] - _RotPoint);
+                float rotationAngle = acos(dot(up, rotationVector));
+                float rotationAxis = normalize(cross(up, rotationVector));
+
+                //rotate top vertex around rotationAxis by roationAngle
+                pos[0] = float4(rotateAroundAxis(pos[0] - center, rotationAngle, rotationAxis) + center, 1);
 
                 g2f OUT;
                 //top
