@@ -18,6 +18,6 @@ public class followPointShaderScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rend.material.SetVector("_RotPoint", t.position);
+        rend.sharedMaterial.SetVector("_RotPoint", t.position);
     }
 }

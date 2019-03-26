@@ -5,11 +5,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 [ExecuteInEditMode]
-public class SimplePointMeshGen : MonoBehaviour
+public class PlanePointCloudMeshGen : MonoBehaviour
 {
 
     private Mesh mesh;
-    public int numPoints = 10;
+    public int numPoints = 50;
 
     // Use this for initialization
     void Start()
@@ -25,11 +25,9 @@ public class SimplePointMeshGen : MonoBehaviour
         Vector3[] points = new Vector3[numPoints];
         int[] indecies = new int[numPoints];
         Color[] colors = new Color[numPoints];
-
-        for(int i = 0; i < numPoints; i++)
+        for (int i = 0; i < points.Length; ++i)
         {
-            float x = i * 0.2f;
-            points[i] = new Vector3(x, 0, 0);
+            points[i] = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
             indecies[i] = i;
             colors[i] = Color.white;
         }
