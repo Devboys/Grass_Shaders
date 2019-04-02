@@ -2,21 +2,23 @@
 
 public class Debug_CameraMovement : MonoBehaviour
 {
-    public float Speed = 50;
+    public float xSpeed = 1;
+    public float ySpeed = 0.5f;
 
     void Update()
     {
-        float xAxisValue = Input.GetAxis("Horizontal") * Speed;
-        float zAxisValue = Input.GetAxis("Vertical") * Speed;
+        float xAxisValue = Input.GetAxisRaw("Horizontal") * xSpeed;
+        float zAxisValue = Input.GetAxisRaw("Vertical") * xSpeed;
+
         float yValue = 0.0f;
 
         if (Input.GetKey(KeyCode.Q))
         {
-            yValue = -Speed * 0.3f;
+            yValue = -ySpeed;
         }
         if (Input.GetKey(KeyCode.E))
         {
-            yValue = Speed * 0.3f;
+            yValue = ySpeed;
         }
 
         transform.position = new Vector3(transform.position.x + xAxisValue, transform.position.y + yValue, transform.position.z + zAxisValue);

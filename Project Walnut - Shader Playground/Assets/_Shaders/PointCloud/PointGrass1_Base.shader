@@ -1,4 +1,4 @@
-﻿Shader "Custom/Grass/PointGrass_Base"
+﻿Shader "Grass/PointGrass/PointGrass_Base"
 {
     Properties
     {
