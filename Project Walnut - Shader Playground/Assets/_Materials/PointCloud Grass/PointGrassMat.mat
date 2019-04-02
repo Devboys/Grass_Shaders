@@ -70,7 +70,7 @@ Material:
     - _DstBlend: 0
     - _GHeight: 0.59
     - _GOffset: 2
-    - _GWidth: 0.13
+    - _GWidth: 0.153
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -79,7 +79,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RotAmount: -36.8
-    - _RotAngle: 9
+    - _RotAngle: 8
     - _RotX: 19
     - _RotY: 0
     - _RotZ: 0
@@ -101,4 +101,4 @@ Material:
     - _RotVector: {r: 1, g: 0, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _WindVec: {r: 1, g: 1, b: 0.5, a: 1}
+    - _WindVec: {r: 1, g: 1, b: 1, a: 0}

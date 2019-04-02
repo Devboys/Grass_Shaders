@@ -48,7 +48,7 @@
                 return o;
             }
 
-            [maxvertexcount(4)]
+            [maxvertexcount(8)]
             void geom(point v2g IN[1], inout TriangleStream<g2f> triStream)
             {
                 float3 center = IN[0].vertex.xyz;
@@ -64,22 +64,17 @@
                 //grass height is randomized based on XZ world coordinates of grass.
                 float heightCalculated = _GHeight * randomRange(center.xz, 0.5, 1);
 
-                float4 pos[8];
+                float4 pos[4];
                 //WINDING ORDER CLOCKWISE, REMEMBER
-                pos[0] = float4(center + right * halfWidth, 1.0f);
-                pos[1] = float4(center + up * heightCalculated, 1.0f);
+                pos[0] = float4(center + up * heightCalculated, 1.0f);
+                pos[1] = float4(center + right * halfWidth, 1.0f);
                 pos[2] = float4(center - right * halfWidth, 1.0f);
+                pos[3] = float4(center + forward * halfWidth, 1.0f);
 
-                pos[3] = float4(center - forward * halfWidth, 1.0f);
-                pos[4] = float4(center - forward * halfWidth, 1.0f);
-                pos[5] = float4(center - forward * halfWidth, 1.0f);
-                pos[6] = float4(center - forward * halfWidth, 1.0f);
-                pos[7] = float4(center - forward * halfWidth, 1.0f);
-
-/* this looks wierd, and grainy
+                /* this looks wierd, and grainy
                 pos[1].z += randomRange(pos[1].xz, 0, 0.04);
                 pos[2].z += randomRange(pos[2].xz, 0, 0.04);
-*/
+                */
 
 
                 //Define rotation vector and angle based on given wind-direction
@@ -91,49 +86,38 @@
                 pos[0] = float4(rotateAroundAxis(pos[0].xyz - center, rotationAngle, rotationAxis) + center, 1);
 
                 g2f OUT;
+
+                //front tri
                 //top
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[0]);
                 OUT.uv = float2(0, 1);
                 triStream.Append(OUT);
-
                 //right
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[1]);
                 OUT.uv = float2(1, 0);
                 triStream.Append(OUT);
-
                 //left
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[2]);
                 OUT.uv = float2(0, 0);
                 triStream.Append(OUT);
 
-                //top
+                //back tri 1
+                OUT.vertex = mul(UNITY_MATRIX_VP, pos[3]);
+                OUT.uv = float2(0, 0);
+                triStream.Append(OUT);
+
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[0]);
                 OUT.uv = float2(0, 1);
                 triStream.Append(OUT);
 
-                //back tri
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[5]);
-                OUT.uv = float2(1, 0);
-                triStream.Append(OUT);
-
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[4]);
+                //back tri 2
+                OUT.vertex = mul(UNITY_MATRIX_VP, pos[3]);
                 OUT.uv = float2(0, 0);
                 triStream.Append(OUT);
 
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[5]);
-                OUT.uv = float2(0, 1);
-                triStream.Append(OUT);
-
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[6]);
+                OUT.vertex = mul(UNITY_MATRIX_VP, pos[1]);
                 OUT.uv = float2(0, 0);
                 triStream.Append(OUT);
-
-                OUT.vertex = mul(UNITY_MATRIX_VP, pos[7]);
-                OUT.uv = float2(0, 1);
-
-                triStream.Append(OUT);
-                
-                //triStream.RestartStrip();
             }
 
             half4 frag(g2f IN) : COLOR

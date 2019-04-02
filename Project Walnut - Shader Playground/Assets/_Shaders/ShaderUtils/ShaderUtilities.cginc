@@ -11,7 +11,6 @@ float randomRange(float2 st, float min, float max)
 float3 rotateAroundAxis(float3 origin, float angle, float3 axis)
 {
     float k = 1 - cos(angle);
-    //axis = normalize(axis);
     float x = axis.x;
     float y = axis.y;
     float z = axis.z;
