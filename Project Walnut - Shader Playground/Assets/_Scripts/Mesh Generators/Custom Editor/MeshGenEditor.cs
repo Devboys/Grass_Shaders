@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(PlanePointCloudMeshGen))]
+[CustomEditor(typeof(MeshGen_Base), true)]
 public class MeshGenEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        PlanePointCloudMeshGen myScript = (PlanePointCloudMeshGen)target;
+        MeshGen_Base myScript = (MeshGen_Base)target;
         if(GUILayout.Button("Build Mesh"))
         {
             myScript.BuildMesh();

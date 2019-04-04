@@ -5,14 +5,13 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 [ExecuteInEditMode]
-public class LinePointMeshGen : MonoBehaviour
+public class LinePointMeshGen : MeshGen_Base
 {
 
     private Mesh mesh;
     public int numPoints = 10;
 
-    // Use this for initialization
-    void Start()
+    public override void BuildMesh()
     {
         mesh = new Mesh();
 
@@ -20,7 +19,7 @@ public class LinePointMeshGen : MonoBehaviour
         CreateMesh();
     }
 
-    void CreateMesh()
+    private void CreateMesh()
     {
         Vector3[] points = new Vector3[numPoints];
         int[] indecies = new int[numPoints];
