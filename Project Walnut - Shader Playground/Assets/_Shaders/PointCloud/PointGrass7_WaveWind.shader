@@ -1,4 +1,4 @@
-﻿Shader "Grass/PointGrass/PointGrassThicc"
+﻿Shader "Grass/PointGrass/PointGrassWindWave"
 {
     Properties
     {
@@ -10,6 +10,8 @@
 
         _WindVec("Wind Direction", Vector) = (1, 1, 1)
         _RotAngle("Rotation Angle", range(-90, 90)) = 0
+
+        _WindMap("Wind Map", 2D) = "white"
     }
     SubShader
     {
@@ -79,7 +81,7 @@
 
                 //Define rotation vector and angle based on given wind-direction
                 float3 directionVector = normalize(_WindVec);
-                float rotationAngle = angleToRad(_RotAngle) * sin(_Time[3]);
+                float rotationAngle = angleToRad(_RotAngle) * sin(_Time[3] + center.x + center.z);
                 float3 rotationAxis = normalize(cross(up, directionVector));
 
                 //rotate top vertex around rotationAxis by roationAngle
@@ -122,6 +124,8 @@
 
             half4 frag(g2f IN) : COLOR
             {
+                //float4 col = float4(0.5, IN.uv.y, 0.5, 1);//temp, maybe do stuff with saturation.
+                //float sat = IN.uv.y;
                 float4 col = lerp(_GColBot, _GColTop, IN.uv.y); //float4(czm_saturation(float3(0,1,0), sat), 1);
                 return col;
             }
