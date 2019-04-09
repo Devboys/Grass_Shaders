@@ -73,11 +73,6 @@
                 pos[2] = float4(center - right * halfWidth, 1.0f);
                 pos[3] = float4(center + forward * halfWidth, 1.0f);
 
-                /* this looks wierd, and grainy
-                pos[1].z += randomRange(pos[1].xz, 0, 0.04);
-                pos[2].z += randomRange(pos[2].xz, 0, 0.04);
-                */
-
 
                 //Define rotation vector and angle based on given wind-direction
                 float3 directionVector = normalize(_WindVec);
@@ -89,16 +84,16 @@
 
                 g2f OUT;
 
+                //construct pyramid
                 //front tri
-                //top
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[0]);
                 OUT.uv = float2(0, 1);
                 triStream.Append(OUT);
-                //right
+                
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[1]);
                 OUT.uv = float2(1, 0);
                 triStream.Append(OUT);
-                //left
+                
                 OUT.vertex = mul(UNITY_MATRIX_VP, pos[2]);
                 OUT.uv = float2(0, 0);
                 triStream.Append(OUT);
