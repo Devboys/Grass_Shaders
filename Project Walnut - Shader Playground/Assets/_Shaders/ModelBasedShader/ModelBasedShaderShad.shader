@@ -2,6 +2,7 @@
 {
     Properties
     {
+        //  Parameters/variables that can be adjusted in unity
         _WorldSize("World Size", vector) = (1, 1, 1, 1)
         _WindSpeed("Wind Speed", vector) = (1, 1, 1, 1)
         _WaveSpeed("Wave Speed", float) = 1.0
@@ -17,7 +18,7 @@
         Pass
         {
             CGPROGRAM
-            
+            // Create variable names to read/write data in/out of unity/shader program
             #pragma vertex bob
             #pragma fragment cindy
             float4 _WorldSize;
@@ -51,13 +52,14 @@
                 vertexOutput vOut;
                 vOut.pos = UnityObjectToClipPos(vIn.pos);
                 float4 normal4 = float4(vIn.normal, 0.0);    
-                vOut.normal = normalize(mul(normal4, unity_WorldToObject).xyz);  
-                
+                vOut.normal = normalize(mul(normal4, unity_WorldToObject).xyz); 
                 // get vertex world position
                 float4 worldPos = mul(unity_ObjectToWorld, vIn.pos);
                 // normalize position based on world size
                 float2 samplePos = worldPos.xz/_WorldSize.xz;
-                // scroll sample position based on time
+                // random - not working
+             //missing random implementation               
+                // scroll sample position based on time (and random "noise"- not yet)
                 // Time (a float4) since level load (t/20, t, t*2, t*3)
                 samplePos += _Time.x * _WindSpeed.xy;
                 // get wind texture
