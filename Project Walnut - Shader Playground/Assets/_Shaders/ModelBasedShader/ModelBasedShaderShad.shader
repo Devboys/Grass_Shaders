@@ -21,6 +21,7 @@
             // Create variable names to read/write data in/out of unity/shader program
             #pragma vertex bob
             #pragma fragment cindy
+            //#include "Assets/_Shaders/ShaderUtils/ShaderUtilities.cginc"
             float4 _WorldSize;
             float4 _WindSpeed;
             sampler2D _WindTex;
@@ -40,6 +41,13 @@
                 //float2 worldPos : TEXCOORD0;
             };
             
+            float randomRange(float2 st, float min, float max) 
+            {
+                float num = frac(sin(dot(st.xy,
+                float2(12.9898, 78.233)))* 43758.5453123);
+                return (num + min) * (max-min);
+            }
+            
             struct vertexInput
             {
                 float4 pos : POSITION;
@@ -57,11 +65,13 @@
                 float4 worldPos = mul(unity_ObjectToWorld, vIn.pos);
                 // normalize position based on world size
                 float2 samplePos = worldPos.xz/_WorldSize.xz;
-                // random - not working
-             //missing random implementation               
+                // get random
+                float rand = randomRange(samplePos, 1.1, 1.5);
+                float randOne = randomRange(samplePos, 1.1, 1.5);
+                float randTwo = randomRange(samplePos, 1.1, 1.5);          
                 // scroll sample position based on time (and random "noise"- not yet)
                 // Time (a float4) since level load (t/20, t, t*2, t*3)
-                samplePos += _Time.x * _WindSpeed.xy;
+                samplePos += _Time.x * _WindSpeed.xy * rand;
                 // get wind texture
                 float windSample = tex2Dlod(_WindTex, float4(samplePos, 0,0)); 
                 // test sample position           
@@ -71,8 +81,8 @@
                 // make animation stronger with height
                 heightFactor = heightFactor * pow(vIn.pos.y, _HeightFactor);
                 // apply wave animation
-                vOut.pos.z += sin(_WaveSpeed*windSample)*_WaveAmp * heightFactor;
-                vOut.pos.x += cos(_WaveSpeed*windSample)*_WaveAmp * heightFactor;
+                vOut.pos.z += sin(_WaveSpeed*windSample)*_WaveAmp * heightFactor * randOne;
+                vOut.pos.x += cos(_WaveSpeed*windSample)*_WaveAmp * heightFactor * randTwo;
                 // apply wave animation
                 //vOut.pos.z += sin(_WaveSpeed*windSample)*_WaveAmp;
                 //vOut.pos.x += cos(_WaveSpeed*windSample)*_WaveAmp;

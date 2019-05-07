@@ -87,6 +87,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _WindSpeed: {r: 10, g: 1, b: 5, a: 0}
+    - _WindSpeed: {r: 16, g: 1, b: 5, a: 0}
     - _WorldSize: {r: 0.3, g: 1, b: 0.3, a: 0}
     - _grassColor: {r: 0.059781827, g: 0.764151, b: 0, a: 1}
