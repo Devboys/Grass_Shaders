@@ -7,33 +7,8 @@ float randomRange(float2 st, float min, float max)
     return (num + min) * (max-min);
 }
 
-//Rotation functions using matrix-multiplication, angles in RAD
-float3 rotateAroundZ(float3 origin, float angle) 
-{
-    float3x3 rotZMat = { cos(angle), -sin(angle), 0,
-                         sin(angle), cos(angle),  0,
-                         0,          0,           1 };
-
-    return mul(rotZMat, origin);
-}
-float3 rotateAroundY(float3 origin, float angle) 
-{
-    float3x3 rotZMat = { cos(angle),  0, sin(angle),
-                         0,           1, 0,
-                         -sin(angle), 0, cos(angle)};
-
-    return mul(rotZMat, origin);
-}
-float3 rotateAroundX(float3 origin, float angle) 
-{
-    float3x3 rotZMat = { 1, 0,          0,
-                         0, cos(angle), -sin(angle),
-                         0, sin(angle), cos(angle)};
-
-    return mul(rotZMat, origin);
-}
-
-float3 rotateAroundAxis(float3 origin, float angle, float3 axis) 
+//Rotate a point around a given axis with a given angle (in RAD)
+float3 rotateAroundAxis(float3 origin, float angle, float3 axis)
 {
     float k = 1 - cos(angle);
     float x = axis.x;
@@ -41,14 +16,18 @@ float3 rotateAroundAxis(float3 origin, float angle, float3 axis)
     float z = axis.z;
 
     float3x3 rotAxisMat = { pow(x, 2) * k + cos(angle),  x*y*k - z * sin(angle),     x*z*k + y * sin(angle),
-                            x*y*k + z * sin(angle),      pow(y, 2) * k + cos(angle), y*z*k - angle * sin(angle),
-                            x*z*k - y * sin(angle),      y*z*k + angle * sin(angle), pow(z, 2) * k + cos(angle)};
+                            x*y*k + z * sin(angle),      pow(y, 2) * k + cos(angle), y*z*k - x * sin(angle),
+                            x*z*k - y * sin(angle),      y*z*k + x * sin(angle),     pow(z, 2) * k + cos(angle) };
 
     return mul(rotAxisMat, origin);
 }
 
-//TODO: Rotation functions using quartenions;
+//Rotate methods for simple rotations around x, y and z axes
+float3 rotateAroundX(float3 origin, float angle) { return rotateAroundAxis(origin, angle, float3(1, 0, 0)); }
+float3 rotateAroundY(float3 origin, float angle) { return rotateAroundAxis(origin, angle, float3(0, 1, 0)); }
+float3 rotateAroundZ(float3 origin, float angle) { return rotateAroundAxis(origin, angle, float3(0, 0, 1)); }
 
+//TODO: Rotation functions using quartenions;
 
 //Angle conversion
 float angleToRad(float angle)
@@ -61,3 +40,19 @@ float radToAngle(float rad)
     return rad * (180 / UNITY_PI);
 }
 
+
+//Color stuff
+float3 czm_saturation(float3 rgb, float adjustment)
+{
+    float3 W = float3(0.2125, 0.7154, 0.0721);
+    float intensity = dot(rgb, W);
+    return lerp(intensity, rgb, adjustment);
+}
+
+//vec3 czm_saturation(vec3 rgb, float adjustment)
+//{
+//    // Algorithm from Chapter 16 of OpenGL Shading Language
+//    const vec3 W = vec3(0.2125, 0.7154, 0.0721);
+//    vec3 intensity = vec3(dot(rgb, W));
+//    return mix(intensity, rgb, adjustment);
+//}

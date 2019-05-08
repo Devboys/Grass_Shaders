@@ -4,23 +4,22 @@ using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-[ExecuteInEditMode]
 public class PlanePointCloudMeshGen : MonoBehaviour
 {
 
     private Mesh mesh;
     public int numPoints = 50;
 
-    // Use this for initialization
-    void Start()
+    public void BuildMesh()
     {
         mesh = new Mesh();
 
         GetComponent<MeshFilter>().mesh = mesh;
-        CreateMesh();
+        if (numPoints != 1) CreateMeshAll();
+        else CreateMeshSingle();
     }
 
-    void CreateMesh()
+    void CreateMeshAll()
     {
         Vector3[] points = new Vector3[numPoints];
         int[] indecies = new int[numPoints];
@@ -31,6 +30,22 @@ public class PlanePointCloudMeshGen : MonoBehaviour
             indecies[i] = i;
             colors[i] = Color.white;
         }
+
+        mesh.vertices = points;
+        mesh.colors = colors;
+        mesh.SetIndices(indecies, MeshTopology.Points, 0);
+
+    }
+
+    void CreateMeshSingle()
+    {
+        Vector3[] points = new Vector3[1];
+        int[] indecies = new int[1];
+        Color[] colors = new Color[1];
+
+        points[0] = new Vector3(0, 0, 0);
+        indecies[0] = 0;
+        colors[0] = Color.white;
 
         mesh.vertices = points;
         mesh.colors = colors;
