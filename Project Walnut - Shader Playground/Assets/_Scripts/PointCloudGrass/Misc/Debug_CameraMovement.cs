@@ -22,7 +22,6 @@ public class Debug_CameraMovement : MonoBehaviour
         //Mouse  camera angle done.  
 
         //Keyboard commands
-        float f = 0.0f;
         Vector3 p = GetBaseInput();
         totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
         p = p * mainSpeed;
