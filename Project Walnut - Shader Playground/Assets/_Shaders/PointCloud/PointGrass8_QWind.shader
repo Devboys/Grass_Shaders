@@ -83,7 +83,6 @@
                 float4 rotQuaternion = rotate_angle_axis(rotationAngle, rotationAxis);
 
                 //rotate top vertex around rotationAxis by roationAngle
-                //pos[0] = float4(rotateAroundAxis(pos[0].xyz - center, rotationAngle, rotationAxis) + center, 1);
                 pos[0] = float4(rotate_vector(pos[0].xyz - center, rotQuaternion) + center, 1);
 
                 g2f OUT;

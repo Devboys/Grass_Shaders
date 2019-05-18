@@ -78,12 +78,12 @@
 
 
                 //Define rotation vector and angle based on given wind-direction
-                float3 directionVector = normalize(_WindVec);
+                /*float3 directionVector = normalize(_WindVec);
                 float rotationAngle = angleToRad(_RotAngle) * sin(_Time[3]);
-                float3 rotationAxis = normalize(cross(up, directionVector));
+                float3 rotationAxis = normalize(cross(up, directionVector));*/
 
                 //rotate top vertex around rotationAxis by roationAngle
-                pos[0] = float4(rotateAroundAxis(pos[0].xyz - center, rotationAngle, rotationAxis) + center, 1);
+                //pos[0] = float4(rotateAroundAxis(pos[0].xyz - center, rotationAngle, rotationAxis) + center, 1);
 
                 g2f OUT;
 

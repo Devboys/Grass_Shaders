@@ -21,7 +21,7 @@
             // Create variable names to read/write data in/out of unity/shader program
             #pragma vertex bob
             #pragma fragment cindy
-            //#include "Assets/_Shaders/ShaderUtils/ShaderUtilities.cginc"
+
             float4 _WorldSize;
             float4 _WindSpeed;
             sampler2D _WindTex;
@@ -61,31 +61,34 @@
                 vOut.pos = UnityObjectToClipPos(vIn.pos);
                 float4 normal4 = float4(vIn.normal, 0.0);    
                 vOut.normal = normalize(mul(normal4, unity_WorldToObject).xyz); 
+
                 // get vertex world position
                 float4 worldPos = mul(unity_ObjectToWorld, vIn.pos);
+
                 // normalize position based on world size
                 float2 samplePos = worldPos.xz/_WorldSize.xz;
+
                 // get random
                 float rand = randomRange(samplePos, 1.1, 1.5);
                 float randOne = randomRange(samplePos, 1.1, 1.5);
-                float randTwo = randomRange(samplePos, 1.1, 1.5);          
+                float randTwo = randomRange(samplePos, 1.1, 1.5);    
+
                 // scroll sample position based on time (and random "noise"- not yet)
-                // Time (a float4) since level load (t/20, t, t*2, t*3)
                 samplePos += _Time.x * _WindSpeed.xy * rand;
+
                 // get wind texture
                 float windSample = tex2Dlod(_WindTex, float4(samplePos, 0,0)); 
-                // test sample position           
-                //vOut.worldPos = samplePos;
+
                 // 0 animation below _HeightCutoff
                 float heightFactor = vIn.pos.y > _HeightCutoff;
+
                 // make animation stronger with height
                 heightFactor = heightFactor * pow(vIn.pos.y, _HeightFactor);
+
                 // apply wave animation
                 vOut.pos.z += sin(_WaveSpeed*windSample)*_WaveAmp * heightFactor * randOne;
                 vOut.pos.x += cos(_WaveSpeed*windSample)*_WaveAmp * heightFactor * randTwo;
-                // apply wave animation
-                //vOut.pos.z += sin(_WaveSpeed*windSample)*_WaveAmp;
-                //vOut.pos.x += cos(_WaveSpeed*windSample)*_WaveAmp;
+
                 return vOut;
             }
             
@@ -102,7 +105,7 @@
                 // apply lighting    
                 float ramp = clamp(dot(fIn.normal, lightDir), 0.001, 1.0);    
                 float3 lighting = tex2D(_RampTex, float2(ramp, 0.5)).rgb;    
-                float3 rgb = _LightColor0.rgb * lighting * _grassColor.rgb;    
+                float3 rgb = lighting * _grassColor.rgb;    
                 return float4(rgb, 1.0);
                 
             }

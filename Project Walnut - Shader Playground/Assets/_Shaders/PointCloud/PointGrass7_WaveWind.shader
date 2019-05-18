@@ -64,7 +64,7 @@
                 float halfWidth = (_GWidth) / 2;
 
                 //grass height is randomized based on XZ world coordinates of grass.
-                float heightCalculated = _GHeight * randomRange(center.xz, 0.5, 1);
+                float heightCalculated = _GHeight* randomRange(center.xz, 0.5, 1);
 
                 float4 pos[4];
                 //WINDING ORDER CLOCKWISE, REMEMBER
