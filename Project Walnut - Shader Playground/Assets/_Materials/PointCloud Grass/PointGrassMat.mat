@@ -83,7 +83,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RotAmount: -36.8
-    - _RotAngle: 3
+    - _RotAngle: 10
     - _RotX: 19
     - _RotY: 0
     - _RotZ: 0

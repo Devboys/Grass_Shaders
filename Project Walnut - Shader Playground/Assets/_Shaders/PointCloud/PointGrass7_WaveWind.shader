@@ -10,8 +10,6 @@
 
         _WindVec("Wind Direction", Vector) = (1, 1, 1)
         _RotAngle("Rotation Angle", range(-90, 90)) = 0
-
-        _WindMap("Wind Map", 2D) = "white"
     }
     SubShader
     {

@@ -11,7 +11,7 @@ public class ProjectPointCloudMeshGen : MeshGen_Base
     public int numPoints = 50;
     public float sizeX = 1;
     public float sizeZ = 1;
-    public LayerMask groundMask;
+    public LayerMask groundMask = ~0;
     public bool projectDownward = true;
 
     private void Start()

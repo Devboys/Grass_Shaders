@@ -50,7 +50,10 @@ public class SectionedPointMeshGen : MeshGen_Base
             for (int j = 0; j < Mathf.Sqrt(numMeshes); j++)
             {
                 GameObject child = Instantiate(meshPrefab, this.transform, false);
-                child.transform.localPosition = new Vector3(-(size / 2) + i * perMeshSize + perMeshSize / 2, 0, -(size / 2) + j * perMeshSize + perMeshSize / 2);
+                if (numMeshes > 1)
+                {
+                    child.transform.localPosition = new Vector3(-(size / 2) + i * perMeshSize + perMeshSize / 2, 0, -(size / 2) + j * perMeshSize + perMeshSize / 2);
+                }
 
                 Mesh childMesh = new Mesh();
                 child.GetComponent<MeshFilter>().mesh = childMesh;
