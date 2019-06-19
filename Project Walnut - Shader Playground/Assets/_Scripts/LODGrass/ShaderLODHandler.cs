@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
+[ExecuteInEditMode]
 public class ShaderLODHandler : MonoBehaviour
 {
 
@@ -10,13 +11,13 @@ public class ShaderLODHandler : MonoBehaviour
 
     [SerializeField] private float[] LOD_Thresholds;
     [SerializeField] private Shader[] LOD_Shaders;
-    [SerializeField] private Camera mainCam;
+    [SerializeField] private GameObject mainCam;
 
     // Start is called before the first frame update
     void Start()
     {
         Shader.WarmupAllShaders(); //prepares all shaders for use.
-        mat = GetComponent<MeshRenderer>().material;
+        mat = GetComponent<MeshRenderer>().sharedMaterial;
     }
 
     // Update is called once per frame
